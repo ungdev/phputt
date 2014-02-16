@@ -10,7 +10,7 @@ Via Composer
 ``` json
 {
     "require": {
-        "league/annotations": "dev-master"
+        "ungdev/phputt": "dev-master"
     }
 }
 ```

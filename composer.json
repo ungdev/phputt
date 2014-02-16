@@ -6,14 +6,14 @@
         "utt",
         "services"
     ],
-    "homepage": "https://github.com/tgalopin/annotations",
+    "homepage": "https://github.com/ungdev/phputt",
     "license": "MIT",
     "authors": [
         {
             "name": "Titouan Galopin",
             "email": "galopintitouan@gmail.com",
             "homepage": "http://titouangalopin.com",
-            "role": "Developer"
+            "role": "Lead Developer"
         }
     ],
     "require": {
@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-0": {
-            "League": ["src", "tests"]
+            "PhpUtt": ["src"]
         }
     }
 }
