@@ -22,7 +22,7 @@ Via Composer
 
 La connexion utilisateur permet d'utiliser l'interface CAS officielle de l'UTT facilement.
 
-> **Remarque* : vous **devez** utiliser un nom de domain approuvé par le CRI pour utiliser le CAS. Tous les noms de
+> **Remarque** : vous **devez** utiliser un nom de domain approuvé par le CRI pour utiliser le CAS. Tous les noms de
 > domaines en *.utt.fr sont par défaut approuvés.
 
 ``` php
@@ -40,16 +40,25 @@ $security->logout();
 Un annuaire LDAP des étudiants est mis à disposition par l'UTT. Cette librairie permet d'utiliser le LDAP pour récupérer
 les informations utilisateurs.
 
-> **Remarque* : le LDAP n'est accessible que depuis l'intérieur du réseau de l'UTT (Wifi ou SIA).
+> **Remarque** : le LDAP n'est accessible que depuis l'intérieur du réseau de l'UTT (Wifi ou SIA).
 
 ``` php
-$security = new PhpUtt\Cas\SecurityLayer();
+$ldap = new PhpUtt\Ldap\LdapLayer();
 
-// Retourne le login utilisateur. Redirige vers l'interface CAS si l'utilisateur n'est pas connecté.
-$userLogin = $security->login();
+// Retourne un objet décrivant l'utilisateur
+$user = $ldap->getUser($login);
 
-// Déconnecte l'utilisateur du CAS. Vous devez toujours supprimer la session courante de votre script PHP.
-$security->logout();
+// Retourne un objet décrivant l'association
+$orga = $ldap->getOrga($login);
+
+// Retourne un tableau de tous les utilisateurs
+$users = $ldap->getUsers();
+
+// Retourne un tableau de tous les étudiants (personnel de l'UTT retiré)
+$students = $ldap->getStudents();
+
+// Retourne un tableau de toutes les associations
+$users = $ldap->getOrgas($login);
 ```
 
 ## Credits

@@ -18,19 +18,41 @@ namespace PhpUtt\Cas;
  */
 class SecurityLayer
 {
+    /**
+     * Constructor
+     *
+     * @param string $version
+     * @param string $host
+     * @param int $port
+     * @param string $path
+     * @param bool $regenerateSession
+     */
     public function __construct($version = '1.0', $host = 'cas.utt.fr', $port = 443, $path = '/cas/', $regenerateSession = false)
     {
         \phpCAS::client($version, $host, $port, $path, $regenerateSession);
         \phpCAS::setNoCasServerValidation();
     }
 
+    /**
+     * Log in the user. Ask for the login/password using the CAS interface if the user user is not already connected.
+     *
+     * @return string
+     */
     public function login()
     {
         \phpCAS::forceAuthentication();
         return \phpCAS::getUser();
     }
 
-    public function logout($domain = false)
+    /**
+     * Log out the user from CAS, and redirect to given URL.
+     *
+     * Note that the PHP session for the current script won't be deleted.
+     *
+     * @param string|bool $redirect
+     * @throws \RuntimeException
+     */
+    public function logout($redirect = false)
     {
         if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
             $method = 'http';
@@ -38,26 +60,26 @@ class SecurityLayer
             $method = 'https';
         }
 
-        if (! $domain) {
-            $domain = $this->getDomainName();
+        if (! $redirect) {
+            $redirect = $this->getDomainName();
 
-            if (! $domain) {
+            if (! $redirect) {
                 throw new \RuntimeException(
-                    'Domain name automatic detection failed. You have to provide the domain name in '.__CLASS__.'::'.__METHOD__
+                    'Redirection URL automatic detection failed. You have to provide the reciredtion URL in '.__CLASS__.'::'.__METHOD__
                 );
             }
         }
 
-        return \phpCAS::logoutWithRedirectService($method.'://'.$domain);
+        return \phpCAS::logoutWithRedirectService($method.'://'.$redirect);
     }
 
     /**
+     * Get the domain name, or automatic domain detection and proper automatic redirection.
+     *
      * @return string
      */
     protected function getDomainName()
     {
-        $host = false;
-
         if ($host = $_SERVER['HTTP_X_FORWARDED_HOST']) {
             $host = trim(end(explode(',', $host)));
         } else {
