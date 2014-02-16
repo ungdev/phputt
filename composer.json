@@ -1,0 +1,28 @@
+{
+    "name": "ungdev/phputt",
+    "description": "PHP 5.3+ abstraction layer for UTT services",
+    "keywords": [
+        "ung",
+        "utt",
+        "services"
+    ],
+    "homepage": "https://github.com/tgalopin/annotations",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Titouan Galopin",
+            "email": "galopintitouan@gmail.com",
+            "homepage": "http://titouangalopin.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "jasig/phpcas": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "League": ["src", "tests"]
+        }
+    }
+}
