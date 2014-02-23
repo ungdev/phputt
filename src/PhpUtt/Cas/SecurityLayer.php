@@ -96,11 +96,11 @@ class SecurityLayer
      */
     protected function getDomainName()
     {
-        if ($host = $_SERVER['HTTP_X_FORWARDED_HOST']) {
+        if (! empty($_SERVER['HTTP_X_FORWARDED_HOST']) && $host = $_SERVER['HTTP_X_FORWARDED_HOST']) {
             $host = trim(end(explode(',', $host)));
         } else {
-            if (! $host = $_SERVER['HTTP_HOST']) {
-                if (! $host = $_SERVER['SERVER_NAME']) {
+            if (empty($_SERVER['HTTP_HOST']) || ! $host = $_SERVER['HTTP_HOST']) {
+                if (empty($_SERVER['SERVER_NAME']) || ! $host = $_SERVER['SERVER_NAME']) {
                     $host = ! empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : false;
                 }
             }
