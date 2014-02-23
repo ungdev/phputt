@@ -47,13 +47,29 @@ class SecurityLayer
     /**
      * Log out the user from CAS, and redirect to given URL.
      *
-     * Note that the PHP session for the current script won't be deleted.
+     * Note that the PHP session for the current script will be completely cleared:
+     * any other sesison won't be available anymore.
      *
      * @param string|bool $redirect
      * @throws \RuntimeException
      */
     public function logout($redirect = false)
     {
+        // Destroy current session
+        $_SESSION = array();
+        @session_destroy();
+
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+
+            setcookie(
+                session_name(), '', time() - 42000,
+                $params['path'], $params['domain'],
+                $params['secure'], $params['httponly']
+            );
+        }
+
+        // Log out from CAS
         if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
             $method = 'http';
         } else {
