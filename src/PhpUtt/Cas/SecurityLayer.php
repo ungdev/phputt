@@ -57,7 +57,6 @@ class SecurityLayer
     {
         // Destroy current session
         $_SESSION = array();
-        @session_destroy();
 
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
