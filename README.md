@@ -3,15 +3,41 @@
 PHP UTT est un set de composants écrits en PHP (PHP 5.3+) facilitant l'utilisation de ressources mises à disposition
 des étudiants par l'UTT pour le développement de sites internet.
 
-## Install
+## Installation
 
-Via Composer
+L'installation se fait via Composer, un gestionnaire de paquets pour PHP. Vous devez donc installer PHP (si vous ne l'avez pas), puis Composer.
+
+### Debian & Ubuntu
+
+Si vous n'avez pas PHP, lancez :
+
+    ```
+    sudo apt-get install php5 php5-cgi php5-cli php5-common php5-curl php5-gd php5-mcrypt php5-mysql php5-fpm php5-intl php5-json php-apc php5-ldap php5-xdebug php5-dev
+    ```
+
+Dans le dossier de votre projet, exécutez ensuite :
+
+    ```
+    curl -sS https://getcomposer.org/installer | php
+    ```
+    
+Cela vous créer un fichier composer.phar, utilisable avec `php composer.phar`.
+
+### Windows
+
+Téléchargez l'installateur Windows sur https://getcomposer.org/download/. Utilisez Composer avec `composer`.
+
+### Composer
+
+Ensuite, dans un fichier `composer.json` :
+
 
 ``` json
 {
     "require": {
         "ungdev/phputt": "dev-master"
-    }
+    },
+    "minimum-stability": "dev"
 }
 ```
 
