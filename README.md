@@ -11,15 +11,11 @@ L'installation se fait via Composer, un gestionnaire de paquets pour PHP. Vous d
 
 Si vous n'avez pas PHP, lancez :
 
-    ```
     sudo apt-get install php5 php5-cgi php5-cli php5-common php5-curl php5-gd php5-mcrypt php5-mysql php5-fpm php5-intl php5-json php-apc php5-ldap php5-xdebug php5-dev
-    ```
 
 Dans le dossier de votre projet, exécutez ensuite :
 
-    ```
     curl -sS https://getcomposer.org/installer | php
-    ```
     
 Cela vous créer un fichier composer.phar, utilisable avec `php composer.phar`.
 
@@ -29,7 +25,7 @@ Téléchargez l'installateur Windows sur https://getcomposer.org/download/. Util
 
 ### Composer
 
-Ensuite, dans un fichier `composer.json` :
+Une fois PHP et Composer installés, créez un fichier `composer.json` avec le contenu suivant :
 
 
 ``` json
@@ -39,6 +35,26 @@ Ensuite, dans un fichier `composer.json` :
     },
     "minimum-stability": "dev"
 }
+```
+
+Cela indique à Composer que vous avez besoin de *phputt* pour votre projet. Lancez ensuite en ligne de commande :
+
+    - `php composer.phar update` pour Debian / Ubuntu
+    - `composer update` pour Windows
+    
+Composer installera alors dans un dossier `vendor` à la fois *phputt* et *phpCAS*, necéssaire à *phputt*.
+
+L'installation terminée, vous pouvez utiliser la librairie en l'incluant avec un simple include de `vendor/autoload.php` :
+
+``` php
+<?php
+
+require 'vendor/autoload.php';
+
+$security = new PhpUtt\Cas\SecurityLayer();
+
+// Retourne le login utilisateur. Redirige vers l'interface CAS si l'utilisateur n'est pas connecté.
+$userLogin = $security->login();
 ```
 
 
@@ -51,15 +67,32 @@ La connexion utilisateur permet d'utiliser l'interface CAS officielle de l'UTT f
 > **Remarque** : vous **devez** utiliser un nom de domain approuvé par le CRI pour utiliser le CAS. Tous les noms de
 > domaines en *.utt.fr sont par défaut approuvés.
 
+#### Connexion
+
+Pour connecter l'utilisateur grâce à CAS, il vous faut utiliser le `SecurityLayer`, une classe gérant l'appel à CAS.
+Pour cela, lorsque vous souhaitez que l'utilisateur se connecte :
+
 ``` php
 $security = new PhpUtt\Cas\SecurityLayer();
 
 // Retourne le login utilisateur. Redirige vers l'interface CAS si l'utilisateur n'est pas connecté.
 $userLogin = $security->login();
+```
 
-// Déconnecte l'utilisateur du CAS. Vous devez toujours supprimer la session courante de votre script PHP.
+Il vous incombe tout de même de stocker ce login en session de votre coté, CAS ne le fera pas pour vous.
+
+#### Déconnexion
+
+De la même manière, lorsque vous souaitez déconnectez l'utilisateur de CAS, vous devez utiliser le `SecurityLayer` :
+
+``` php
+$security = new PhpUtt\Cas\SecurityLayer();
+
 $security->logout();
 ```
+
+> **Remarque** : déconnectez l'utilisateur de CAS ne supprime pas les sessions de votre coté, à vous de le faire.
+
 
 ### LDAP - Récupération d'informations utilisateurs
 
@@ -67,6 +100,8 @@ Un annuaire LDAP des étudiants est mis à disposition par l'UTT. Cette librairi
 les informations utilisateurs.
 
 > **Remarque** : le LDAP n'est accessible que depuis l'intérieur du réseau de l'UTT (Wifi ou SIA).
+
+Les méthodes disponibles sont :
 
 ``` php
 $ldap = new PhpUtt\Ldap\LdapLayer();
