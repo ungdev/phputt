@@ -67,6 +67,8 @@ La connexion utilisateur permet d'utiliser l'interface CAS officielle de l'UTT f
 > **Remarque** : vous **devez** utiliser un nom de domain approuvé par le CRI pour utiliser le CAS. Tous les noms de
 > domaines en *.utt.fr sont par défaut approuvés.
 
+> Si vous souhaitez tout de même pouvoir faire des essais en local, vous aurez remarqué que le CAS ne l'autorise pas, pour la raison évoquée ci-dessus. Une solution consiste à ajouter une entrée au fichier « hosts » (```C:\WINDOWS\system32\drivers\etc\hosts``` sous Windows, ```/etc/hosts``` sous Linux) pour faire le lien entre ```127.0.0.1```et ```test-local.utt.fr```.
+
 #### Connexion
 
 Pour connecter l'utilisateur grâce à CAS, il vous faut utiliser le `SecurityLayer`, une classe gérant l'appel à CAS.
